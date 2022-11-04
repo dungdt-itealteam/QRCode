@@ -13,84 +13,91 @@ const IntroScreen = () => {
   const navigation = useNavigation();
   const onPress = () => {
     if (navigation?.navigate) {
-      navigation.navigate(NameScreen.qrCodeScreen);
+      setTimeout(() => {
+        navigation.navigate(NameScreen.qrCodeScreen);
+      }, 100);
     }
   };
   return (
     <AppBackgroundGradient>
-      <ScrollView bounces={false}>
+      <View
+        style={{
+          marginTop: 70,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Image
+          source={Images.qrCode}
+          style={{
+            width: getOriginalSize(110),
+            height: getOriginalSize(110),
+          }}
+        />
+        <MText
+          style={{
+            marginTop: 30,
+            fontSize: 18,
+            fontFamily: 'Montserrat-Bold',
+            color: 'white',
+          }}>
+          {'QRCode Search Engine'}
+        </MText>
+      </View>
+      <TouchableOpacity
+        onPress={onPress}
+        style={{
+          alignSelf: 'center',
+          width: 100,
+          height: 100,
+          backgroundColor: '#282828',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 130,
+          marginTop: 84,
+        }}>
         <View
           style={{
-            marginTop: getOriginalSize(110),
+            width: 80,
+            height: 80,
+            borderRadius: 103,
+            borderWidth: 2,
+            borderColor: '#585353',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <Image
-            source={Images.qrCode}
-            style={{
-              width: getOriginalSize(234),
-              height: getOriginalSize(236),
-            }}
+            source={require('../res/images/camera.png')}
+            style={{width: 30, height: 30, resizeMode: 'contain'}}
           />
-          <MText
-            style={{
-              marginTop: getOriginalSize(39),
-              fontSize: 16,
-              color: '#BDBDBD',
-            }}>
-            {'QRcode search engine'}
-          </MText>
         </View>
-        <TouchableOpacity
-          onPress={onPress}
-          style={{
-            alignSelf: 'center',
-            width: 130,
-            height: 130,
-            backgroundColor: '#282828',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 130,
-            marginTop: 84,
-          }}>
-          <View
-            style={{
-              width: 103.33,
-              height: 103.33,
-              borderRadius: 103,
-              borderWidth: 1,
-              borderColor: '#585353',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Image
-              source={require('../res/images/camera.png')}
-              style={{width: 42.5, height: 38.25}}
-            />
-          </View>
-        </TouchableOpacity>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onPress} style={{marginTop: 12}}>
         <MText
           style={{
-            fontSize: 16,
+            fontSize: 14,
             color: '#BDBDBD',
             alignSelf: 'center',
-            marginTop: getOriginalSize(24),
+            textAlign: 'center',
           }}>
           {'Click to Start'}
         </MText>
-        <MText
-          style={{
-            fontSize: 16,
-            color: '#BDBDBD',
-            alignSelf: 'center',
-            marginTop: getOriginalSize(138),
-            textAlign: 'center',
-          }}>
-          {
-            'The QR Code will be automaticly detected \nwhen you position it between the guide lines'
-          }
-        </MText>
-      </ScrollView>
+      </TouchableOpacity>
+      <MText
+        style={{
+          fontSize: 14,
+          color: '#BDBDBD',
+          alignSelf: 'center',
+          textAlign: 'center',
+          position: 'absolute',
+          bottom: 70,
+          left: 12,
+          right: 12,
+          lineHeight: 21,
+        }}>
+        {
+          'The QR Code will be automatically detected when you position it between the guide lines'
+        }
+      </MText>
     </AppBackgroundGradient>
   );
 };

@@ -3,18 +3,24 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
+    "android": "npx react-native run-android",
+    "ios": "npx react-native run-ios",
+    "start": "npx react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "android:devices": "cd /Users/dungdt/Library/Android/sdk/platform-tools && adb devices",
+    "android:devices:reverse": "cd /Users/dungdt/Library/Android/sdk/platform-tools && adb -s emulator-5554 reverse tcp:8081 tcp:8081",
+    "android:clean": "cd android && ./gradlew clean",
+    "lint": "eslint .",
+    "build-ios": "npx react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
   },
   "dependencies": {
     "@react-native-camera-roll/camera-roll": "^5.0.4",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.0",
+    "lottie-react-native": "^5.1.4",
     "react": "18.1.0",
     "react-native": "0.70.1",
+    "react-native-bootsplash": "^4.3.2",
     "react-native-camera-kit": "^13.0.0",
     "react-native-device-info": "^10.2.0",
     "react-native-fs": "^2.20.0",

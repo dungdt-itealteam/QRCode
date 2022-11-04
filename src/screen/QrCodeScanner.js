@@ -6,7 +6,7 @@ import {Path, Svg} from 'react-native-svg';
 import {CameraScreen, Camera} from 'react-native-camera-kit';
 import {useNavigation} from '@react-navigation/native';
 import NameScreen from '../constants/NameScreen';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
 import {showAlertFailed} from '../utils/Utils';
 
@@ -100,20 +100,20 @@ const QrCodeScanner = () => {
       <MText
         font={'bold'}
         style={{
-          marginTop: 92,
+          marginTop: 30,
           color: Colors.white,
           fontSize: 18,
           alignSelf: 'center',
         }}>
-        {'Scan QR Code of the device'}
+        {'Scan QR Code'}
       </MText>
-
       <View
         style={{
           marginTop: 36,
           borderWidth: 1,
           width: 305,
           height: 305,
+          borderRadius: 5,
           borderColor: Colors.white,
           alignSelf: 'center',
           overflow: 'hidden',
@@ -124,26 +124,29 @@ const QrCodeScanner = () => {
           scanBarcode={true}
           laserColor={'#38B9C0'}
           onReadCode={getResultViaScanner}
+          cameraFlipImage={require('../res/images/switch-camera.png')}
         />
       </View>
-
       <MText
         style={{
-          marginTop: 36,
           color: '#A4A2A2',
-          fontSize: 14,
+          fontSize: 13,
+          marginTop: 24,
+          alignSelf: 'center',
+          marginHorizontal: 24,
           textAlign: 'center',
+          lineHeight: 21,
         }}>
         {
-          'The QR Code will be automaticly detected\nwhen you position it between the guide lines'
+          'The QR Code will be automatically detected when you position it between the guide lines'
         }
       </MText>
 
       <TouchableOpacity onPress={onSelectImage} style={{marginTop: 36}}>
         <View
           style={{
-            width: 78,
-            height: 78,
+            width: 80,
+            height: 80,
             borderRadius: 78,
             backgroundColor: '#282828',
             justifyContent: 'center',
@@ -152,8 +155,8 @@ const QrCodeScanner = () => {
           }}>
           <View
             style={{
-              width: 62,
-              height: 62,
+              width: 60,
+              height: 60,
               borderRadius: 62,
               borderColor: '#585353',
               borderWidth: 1,

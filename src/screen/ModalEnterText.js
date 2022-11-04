@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-native-modal";
-import { TextInput, TouchableOpacity, View } from "react-native";
+import { Image, TextInput, TouchableOpacity, View } from "react-native";
 import {
   DEVICE_HEIGHT,
   DEVICE_WIDTH,
@@ -49,20 +49,20 @@ const Component = (props, ref) => {
             height: DEVICE_HEIGHT,
             paddingTop: StatusBarHeight,
           }}>
-          <View style={{ flexDirection: "row", paddingHorizontal: 30 }}>
+          <View style={{ flexDirection: "row", paddingHorizontal: 16 }}>
             <TouchableOpacity onPress={onCancel}>
-              {Icons.back()}
+              <Image source={require('../res/images/left-arrow.png')} style={{width: 30, height: 30, tintColor: 'white'}}/>
             </TouchableOpacity>
             <View style={{ flex: 1 }} />
             <TouchableOpacity onPress={() => onSubmit(input)}>
-              {Icons.check()}
+              <Image source={require('../res/images/check-mark.png')} style={{width: 30, height: 30, tintColor: 'white'}}/>
             </TouchableOpacity>
           </View>
           <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            style={{ flex: 1, marginTop: 8 }}>
             <MText
               style={{
-                fontSize: 32,
+                fontSize: 20,
                 fontFamily: Fonts.bold,
                 color: "white",
                 alignSelf: "center",
@@ -72,27 +72,29 @@ const Component = (props, ref) => {
             </MText>
             <MText
               style={{
-                fontSize: 16,
-                fontFamily: Fonts.italic,
+                fontSize: 13,
+                fontFamily: Fonts.normal,
                 color: "white",
                 alignSelf: "center",
                 marginTop: 27,
                 textAlign: "center",
               }}>
-              {"(Your QR code will be generated automatically)"}
+              {'(Your QR code will be generated automatically)'}
             </MText>
             <TextInput
               autoFocus
               style={{
                 fontFamily: Fonts.semiBold,
-                color: "white",
-                fontSize: 16,
+                color: 'white',
+                fontSize: 14,
                 width: DEVICE_WIDTH * 0.9,
-                alignSelf: "center",
-                // backgroundColor: 'white',
+                height: 80,
+                borderRadius: 5,
+                alignSelf: 'center',
+                backgroundColor: 'gray',
                 marginTop: 27,
-                minHeight: 100,
               }}
+              placeholder={'Enter text here...'}
               multiline
               numberOfLines={1000}
               cursorColor={"white"}

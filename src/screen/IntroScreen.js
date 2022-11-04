@@ -27,10 +27,11 @@ const IntroScreen = () => {
           alignItems: 'center',
         }}>
         <Image
-          source={Images.qrCode}
+          source={require('../res/images/logo-2.jpg')}
           style={{
-            width: getOriginalSize(110),
-            height: getOriginalSize(110),
+            width: 200,
+            height: 200,
+            borderRadius: 20,
           }}
         />
         <MText

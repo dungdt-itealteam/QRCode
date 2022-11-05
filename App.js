@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from "react";
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import ThemeProvider from './src/context/ThemeProvider';
 import RootNavigator from './src/navigator/RootNavigator';

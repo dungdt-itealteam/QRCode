@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import {Dimensions, TouchableOpacity, View} from 'react-native';
 import {Defs, LinearGradient, Rect, Stop, Svg} from 'react-native-svg';
 import MText from '../components/MText';
 import Colors from '../constants/Colors';
@@ -8,7 +8,7 @@ export const TYPE_FEATURE = {
   SCAN: 'SCAN',
   GENERATE: 'GENERATE',
 };
-const MethodPicker = (props) => {
+const MethodPicker = props => {
   const [state, setState] = React.useState(0);
   const buttons = [
     {
@@ -26,7 +26,7 @@ const MethodPicker = (props) => {
     if (index !== state) {
       setState(index);
     }
-    if(props?.onScreen){
+    if (props?.onScreen) {
       props.onScreen(index);
     }
   };
@@ -46,8 +46,8 @@ const MethodPicker = (props) => {
       {buttons.map((button, index) => {
         return (
           <TouchableOpacity
-            onPress={() => selectFeature(index)}
-          >
+            key={index.toString()}
+            onPress={() => selectFeature(index)}>
             {state === index ? (
               <ButtonSelected text={button?.text || ''} />
             ) : (

@@ -1,4 +1,8 @@
 {
   "name": "QrCode",
-  "displayName": "QrCode"
+  "displayName": "QrCode",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-1608741967317858~1212594103",
+    "ios_app_id": "ca-app-pub-1608741967317858~9713770770"
+  }
 }

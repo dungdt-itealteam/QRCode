@@ -1,18 +1,31 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import MText from '../components/MText';
 import Colors from '../constants/Colors';
-import {Alert, Linking, TouchableOpacity, View} from 'react-native';
+import {Linking, TouchableOpacity, View} from 'react-native';
 import {Path, Svg} from 'react-native-svg';
-import {CameraScreen, Camera} from 'react-native-camera-kit';
+import {CameraScreen} from 'react-native-camera-kit';
 import {useNavigation} from '@react-navigation/native';
 import NameScreen from '../constants/NameScreen';
 import {launchImageLibrary} from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
 import {showAlertFailed} from '../utils/Utils';
+import {
+  AdEventType,
+  InterstitialAd,
+  TestIds,
+} from 'react-native-google-mobile-ads';
 
+const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+  requestNonPersonalizedAdsOnly: true,
+});
 const QrCodeScanner = () => {
   const navigation = useNavigation();
   const scanned = React.useRef(false);
+  useEffect(() => {
+    return interstitial.addAdEventListener(AdEventType.LOADED, () => {
+      interstitial.show().then();
+    });
+  }, []);
   const navigateToBrowser = url => {
     Linking.canOpenURL(url)
       .then(supported => {
@@ -42,6 +55,7 @@ const QrCodeScanner = () => {
     return false;
   };
   const getResultViaScanner = e => {
+    interstitial.load();
     console.log('EVENT', e);
     if (scanned.current === true) {
       return;
@@ -59,6 +73,7 @@ const QrCodeScanner = () => {
     }
   };
   const onSelectImage = () => {
+    interstitial.load();
     launchImageLibrary({
       includeBase64: true,
       selectionLimit: 1,

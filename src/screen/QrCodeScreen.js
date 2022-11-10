@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AppBackgroundGradient from '../components/AppBackgroundGradient';
 import {Image, TouchableOpacity, View} from 'react-native';
 import {StatusBarHeight} from '../utils/MDeviceInfo';
@@ -6,18 +6,35 @@ import QrCodeScanner from './QrCodeScanner';
 import {useNavigation} from '@react-navigation/native';
 import MethodPicker from './MethodPicker';
 import QrCodeGenerate from './QrCodeGenerate';
+import {
+  AdEventType,
+  InterstitialAd,
+  TestIds,
+} from 'react-native-google-mobile-ads';
+
+const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+  requestNonPersonalizedAdsOnly: true,
+});
 
 const QrCodeScreen = () => {
   const [state, setState] = React.useState({
     indexScreen: 0,
   });
   const navigation = useNavigation();
+
+  useEffect(() => {
+    return interstitial.addAdEventListener(AdEventType.LOADED, () => {
+      interstitial.show().then();
+    });
+  }, []);
+
   const onGoBack = () => {
     if (navigation?.goBack()) {
       navigation.goBack();
     }
   };
   const onScreen = index => {
+    interstitial.load();
     setState(pre => {
       return {
         ...pre,

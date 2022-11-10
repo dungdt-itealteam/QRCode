@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import {TouchableOpacity, View, PermissionsAndroid, Alert} from 'react-native';
 import MText from '../components/MText';
 import Colors from '../constants/Colors';
@@ -10,6 +10,14 @@ import RNFS from 'react-native-fs';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import Lottie from 'lottie-react-native';
 import IOS from '../utils/MDeviceInfo';
+import {
+  AdEventType,
+  InterstitialAd,
+  TestIds,
+} from 'react-native-google-mobile-ads';
+const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+  requestNonPersonalizedAdsOnly: true,
+});
 
 const QrCodeGenerate = props => {
   const refModalEnterText = React.useRef(null);
@@ -17,6 +25,13 @@ const QrCodeGenerate = props => {
   const [state, setState] = React.useState({
     valueQR: '',
   });
+
+  useEffect(() => {
+    return interstitial.addAdEventListener(AdEventType.LOADED, () => {
+      interstitial.show().then();
+    });
+  }, []);
+
   const onGenerate = text => {
     if (text === '') {
       return null;
@@ -30,6 +45,7 @@ const QrCodeGenerate = props => {
     }
   };
   const onSaveQrCodeImage = async () => {
+    interstitial.load();
     const time = new Date().getTime();
     const fileName = `${APP_NAME}_${time}.png`;
     if (refQrCode?.current?.toDataURL) {
@@ -39,6 +55,7 @@ const QrCodeGenerate = props => {
     }
   };
   const onOpenEnterText = () => {
+    interstitial.load();
     if (refModalEnterText?.current?.show) {
       refModalEnterText.current.show(true);
     }

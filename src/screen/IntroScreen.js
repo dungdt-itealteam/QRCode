@@ -1,44 +1,34 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from 'react';
 import {View, Image, TouchableOpacity, StatusBar} from 'react-native';
 import AppBackgroundGradient from '../components/AppBackgroundGradient';
 import MText from '../components/MText';
 import {useNavigation} from '@react-navigation/native';
 import NameScreen from '../constants/NameScreen';
-import {useInterstitialAd, TestIds} from 'react-native-google-mobile-ads';
+import {
+  TestIds,
+  InterstitialAd,
+  AdEventType,
+} from 'react-native-google-mobile-ads';
+
+const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+  requestNonPersonalizedAdsOnly: true,
+});
 
 const IntroScreen = () => {
-  const {isLoaded, isClosed, load, show} = useInterstitialAd(
-    TestIds.INTERSTITIAL,
-    {
-      requestNonPersonalizedAdsOnly: true,
-    },
-  );
-
   const navigation = useNavigation();
+
+  useEffect(() => {
+    return interstitial.addAdEventListener(AdEventType.LOADED, () => {
+      interstitial.show().then();
+    });
+  }, []);
+
   const onPress = () => {
-    if (isLoaded) {
-      show();
-    } else {
-      // No advert ready to show yet
-      setTimeout(() => {
-        navigation.navigate(NameScreen.qrCodeScreen);
-      }, 100);
-    }
+    interstitial.load();
+    setTimeout(() => {
+      navigation.navigate(NameScreen.qrCodeScreen);
+    }, 100);
   };
-
-  useEffect(() => {
-    // Start loading the interstitial straight away
-    load();
-  }, [load]);
-
-  useEffect(() => {
-    if (isClosed) {
-      // Action after the ad is closed
-      setTimeout(() => {
-        navigation.navigate(NameScreen.qrCodeScreen);
-      }, 100);
-    }
-  }, [isClosed, navigation]);
 
   return (
     <AppBackgroundGradient>

@@ -26,10 +26,7 @@ const appOpenAd = AppOpenAd.createForAdRequest(TestIds.APP_OPEN, {
   keywords: ['fashion', 'clothing'],
 });
 
-appOpenAd.load();
 const App = () => {
-  // const [ready, setReady] = useState(false);
-
   useEffect(() => {
     const unsubscribeLoaded = appOpenAd.addAdEventListener(
       AdEventType.LOADED,
@@ -38,7 +35,7 @@ const App = () => {
       },
     );
     return () => {
-      unsubscribeLoaded.remove();
+      unsubscribeLoaded();
     };
   }, []);
 
@@ -46,7 +43,8 @@ const App = () => {
     <ThemeProvider>
       <NavigationContainer
         onReady={() => {
-          RNBootSplash.hide({fade: true});
+          RNBootSplash.hide({fade: true}).then();
+          appOpenAd.load();
         }}>
         <RootNavigator />
       </NavigationContainer>

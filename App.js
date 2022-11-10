@@ -6,16 +6,14 @@
  * @flow strict-local
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import ThemeProvider from './src/context/ThemeProvider';
 import RootNavigator from './src/navigator/RootNavigator';
 import RNBootSplash from 'react-native-bootsplash';
-import {AppState, View} from 'react-native';
+import {View} from 'react-native';
 import {
   AppOpenAd,
-  InterstitialAd,
-  RewardedAd,
   BannerAd,
   TestIds,
   BannerAdSize,

@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { DEVICE_HEIGHT, DEVICE_WIDTH } from "../utils/MDeviceInfo";
 import { Defs, LinearGradient, Rect, Stop, Svg } from "react-native-svg";
 
@@ -7,7 +7,7 @@ const AppBackgroundGradient = props => {
   const begin = props?.begin || "#131313";
   const end = props?.end || "#494949";
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, width: DEVICE_WIDTH, height: DEVICE_HEIGHT }}>
       <View
         style={{
           position: "absolute",

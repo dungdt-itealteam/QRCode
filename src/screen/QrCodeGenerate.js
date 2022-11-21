@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import {TouchableOpacity, View, PermissionsAndroid, Alert} from 'react-native';
+import React, {useEffect} from 'react';
+import {TouchableOpacity, View, Alert, Platform} from 'react-native';
 import MText from '../components/MText';
 import Colors from '../constants/Colors';
 import Icons from '../constants/Icons';
@@ -15,6 +15,8 @@ import {
   InterstitialAd,
   TestIds,
 } from 'react-native-google-mobile-ads';
+import Utils, {checkPermissionWriteStorageAndroid} from '../utils/Utils';
+
 const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
   requestNonPersonalizedAdsOnly: true,
 });
@@ -45,6 +47,7 @@ const QrCodeGenerate = props => {
     }
   };
   const onSaveQrCodeImage = async () => {
+    checkPermissionWriteStorageAndroid();
     interstitial.load();
     const time = new Date().getTime();
     const fileName = `${APP_NAME}_${time}.png`;
@@ -60,43 +63,37 @@ const QrCodeGenerate = props => {
       refModalEnterText.current.show(true);
     }
   };
-
-  async function hasAndroidPermission() {
-    const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
-
-    const hasPermission = await PermissionsAndroid.check(permission);
-    if (hasPermission) {
-      return true;
-    }
-
-    const status = await PermissionsAndroid.request(permission);
-    return status === 'granted';
-  }
-
   const writeFileToStorage = (fileName, data) => {
-    console.log('FILE NAME', fileName);
-    let path =
-      (IOS ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) + fileName;
-    console.log('PATH', path);
+    let path = '';
+    if (Platform.OS === 'ios') {
+      path = RNFS.MainBundlePath;
+    } else {
+      path = RNFS.DocumentDirectoryPath;
+    }
+    path += '/' + fileName;
     RNFS.writeFile(path, data, 'base64')
       .then(success => {
         saveToGallery(fileName, data).then().catch();
       })
       .catch(error => {
-        console.log('WRITE FILE FAILED', error);
-        Alert.alert('Save to gallery failed!.');
+        Alert.alert('', 'Save to gallery failed!.');
       });
   };
   const saveToGallery = async (fileName, data) => {
-    let path =
-      (IOS ? RNFS.MainBundlePath : RNFS.DocumentDirectoryPath) + fileName;
+    let path = '';
+    if (Platform.OS === 'ios') {
+      path = RNFS.MainBundlePath;
+    } else {
+      path = RNFS.DocumentDirectoryPath;
+    }
+    path += '/' + fileName;
     CameraRoll.save(path, 'photo')
       .then(r => {
-        Alert.alert('Save to gallery successfully!.');
+        Alert.alert('', 'Save to gallery successfully!.');
       })
       .catch(e => {
-        console.log('SAVE GALLERY FAILED', error);
-        Alert.alert('Save to gallery failed!.');
+        console.log('SAVE GALLERY FAILED', e);
+        Alert.alert('', 'Save to gallery failed!.');
       });
   };
   return (
@@ -163,17 +160,18 @@ const QrCodeGenerate = props => {
         }}>
         {'We use search engine like Google so you can search anything you want'}
       </MText>
-      <View
-        style={{justifyContent: 'center', alignItems: 'center', marginTop: 36}}>
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity onPress={onOpenEnterText}>
-            {Icons.link()}
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onSaveQrCodeImage}
-            style={{marginLeft: 53}}>
-            {Icons.download()}
-          </TouchableOpacity>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableOpacity onPress={onOpenEnterText}>
+              {Icons.link()}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={onSaveQrCodeImage}
+              style={{marginLeft: 53}}>
+              {Icons.download()}
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
       <ModalEnterText onSubmit={onGenerate} ref={refModalEnterText} />

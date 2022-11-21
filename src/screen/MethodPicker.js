@@ -37,11 +37,12 @@ const MethodPicker = props => {
         height: 58,
         borderRadius: 30,
         backgroundColor: '#282828',
-        position: 'absolute',
-        bottom: 70,
+        // position: 'absolute',
+        // bottom: 70,
         alignSelf: 'center',
         flexDirection: 'row',
         flexWrap: 'wrap',
+        marginBottom: 70
       }}>
       {buttons.map((button, index) => {
         return (

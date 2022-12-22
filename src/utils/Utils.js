@@ -1,16 +1,16 @@
-import { Alert, Platform } from "react-native";
+import {Alert, Platform} from 'react-native';
 import {
   request,
   PERMISSIONS,
   RESULTS,
   openSettings,
   check,
-} from "react-native-permissions";
+} from 'react-native-permissions';
 
 export const showAlertFailed = callback => {
-  Alert.alert("Opps!", "Somethings went wrong.", [
+  Alert.alert('Opps!', 'Somethings went wrong.', [
     {
-      text: "OK",
+      text: 'OK',
       onPress: () => {
         if (callback) {
           callback();
@@ -20,50 +20,24 @@ export const showAlertFailed = callback => {
   ]);
 };
 export const openSettingsPermission = () => {
-  openSettings().catch(e => {
-    console.log("OPEN SETTING FAILED", e);
-  });
-};
-export const requestPermissionCameraAndroid = () => {
-  request(PERMISSIONS.ANDROID.CAMERA)
-    .then(result => {
-    })
-    .catch(e => {
-      console.log("REQUEST CAMERA FAILED", e);
-    });
-};
-export const checkPermissionCameraAndroid = () => {
-  check(PERMISSIONS.ANDROID.CAMERA)
-    .then(result => {
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          Alert.alert("", "Camera is not available (on this device)");
-          break;
-        case RESULTS.DENIED:
-          openSettingsPermission();
-          break;
-        case RESULTS.LIMITED:
-          requestPermissionCameraAndroid();
-          break;
-        case RESULTS.GRANTED:
-          break;
-        case RESULTS.BLOCKED:
-          openSettingsPermission();
-          break;
-        default:
-          break;
-      }
-    })
-    .catch(e => {
-      console.log("CHECK CAMERA FAILED.", e);
-    });
+  let title = 'Open settings';
+  let message = 'Allow permission for the app';
+  Alert.alert(title, message, [
+    {
+      text: 'OK',
+      onPress: () => {
+        openSettings().catch(e => {
+          console.log('OPEN SETTING FAILED', e);
+        });
+      },
+    },
+  ]);
 };
 export const requestPermissionWriteStorageAndroid = () => {
   request(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE)
-    .then(result => {
-    })
+    .then(result => {})
     .catch(e => {
-      console.log("REQUEST WRITE STORAGE FAILED", e);
+      console.log('REQUEST WRITE STORAGE FAILED', e);
     });
 };
 export const checkPermissionWriteStorageAndroid = () => {
@@ -71,7 +45,7 @@ export const checkPermissionWriteStorageAndroid = () => {
     .then(result => {
       switch (result) {
         case RESULTS.UNAVAILABLE:
-          Alert.alert("", "Camera is not available (on this device)");
+          Alert.alert('', 'Camera is not available (on this device)');
           break;
         case RESULTS.DENIED:
           requestPermissionWriteStorageAndroid();
@@ -89,16 +63,73 @@ export const checkPermissionWriteStorageAndroid = () => {
       }
     })
     .catch(e => {
-      console.log("CHECK WRITE STORAGE FAILED.", e);
+      console.log('CHECK WRITE STORAGE FAILED.', e);
     });
 };
 export const checkAllPermission = () => {
   checkPermissionWriteStorageAndroid();
-  checkPermissionCameraAndroid();
 };
+
+const requestPermission = permission => {
+  request(permission)
+    .then(result => {
+      if (result === RESULTS.BLOCKED || result === RESULTS.DENIED) {
+        openSettingsPermission(permission);
+      }
+    })
+    .catch(e => {
+      console.log(`Request permission ${permission} failed.`);
+    });
+};
+const requestPermissionController = (result, permission) => {
+  switch (result) {
+    case RESULTS.UNAVAILABLE:
+      Alert.alert('', `${permission} is not available (on this device)`);
+      break;
+    case RESULTS.DENIED:
+      requestPermission(permission);
+      break;
+    case RESULTS.LIMITED:
+      requestPermission(permission);
+      break;
+    case RESULTS.GRANTED:
+      break;
+    case RESULTS.BLOCKED:
+      openSettingsPermission();
+      break;
+    default:
+      break;
+  }
+};
+const checkPermissionCamera = () => {
+  const permission =
+    Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA;
+  check(permission)
+    .then(result => {
+      requestPermissionController(result, permission);
+    })
+    .catch(e => {
+      console.log('check permission camera failed', e);
+    });
+};
+const checkPermissionReadStorage = () => {
+  const permission =
+    Platform.OS === 'ios'
+      ? PERMISSIONS.IOS.PHOTO_LIBRARY
+      : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+  check(permission)
+    .then(result => {
+      requestPermissionController(result, permission);
+    })
+    .catch(e => {
+      console.log('check permission camera failed', e);
+    });
+};
+
 export default {
   showAlertFailed,
-  checkPermissionCameraAndroid,
   checkPermissionWriteStorageAndroid,
   checkAllPermission,
+  checkPermissionCamera,
+  checkPermissionReadStorage,
 };

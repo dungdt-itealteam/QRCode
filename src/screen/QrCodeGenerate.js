@@ -9,7 +9,6 @@ import QRCode from 'react-native-qrcode-svg';
 import RNFS from 'react-native-fs';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import Lottie from 'lottie-react-native';
-import IOS from '../utils/MDeviceInfo';
 import {
   AdEventType,
   InterstitialAd,
@@ -89,11 +88,11 @@ const QrCodeGenerate = props => {
     path += '/' + fileName;
     CameraRoll.save(path, 'photo')
       .then(r => {
-        Alert.alert('', 'Save to gallery successfully!.');
+        Alert.alert('', 'Save to gallery successfully!');
       })
       .catch(e => {
         console.log('SAVE GALLERY FAILED', e);
-        Alert.alert('', 'Save to gallery failed!.');
+        Alert.alert('', 'Save to gallery failed!');
       });
   };
   return (

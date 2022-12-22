@@ -28,7 +28,6 @@ const appOpenAd = AppOpenAd.createForAdRequest(TestIds.APP_OPEN, {
 
 const App = () => {
   useEffect(() => {
-    checkAllPermission();
     const unsubscribeLoaded = appOpenAd.addAdEventListener(
       AdEventType.LOADED,
       () => {

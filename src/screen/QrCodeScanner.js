@@ -8,7 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import NameScreen from '../constants/NameScreen';
 import {launchImageLibrary} from 'react-native-image-picker';
 import RNQRGenerator from 'rn-qr-generator';
-import {showAlertFailed} from '../utils/Utils';
+import Utils, {showAlertFailed} from '../utils/Utils';
 import {
   AdEventType,
   InterstitialAd,
@@ -26,6 +26,10 @@ const QrCodeScanner = () => {
     return interstitial.addAdEventListener(AdEventType.LOADED, () => {
       interstitial.show().then();
     });
+  }, []);
+  useEffect(() => {
+    Utils.checkPermissionCamera();
+    Utils.checkPermissionReadStorage();
   }, []);
   const getResultViaScanner = e => {
     interstitial.load();

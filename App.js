@@ -6,24 +6,24 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import ThemeProvider from "./src/context/ThemeProvider";
-import RootNavigator from "./src/navigator/RootNavigator";
-import RNBootSplash from "react-native-bootsplash";
-import { View } from "react-native";
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import ThemeProvider from './src/context/ThemeProvider';
+import RootNavigator from './src/navigator/RootNavigator';
+import RNBootSplash from 'react-native-bootsplash';
+import {View} from 'react-native';
 import {
   AppOpenAd,
   BannerAd,
   TestIds,
   BannerAdSize,
   AdEventType,
-} from "react-native-google-mobile-ads";
-import Utils, { checkAllPermission } from "./src/utils/Utils";
+} from 'react-native-google-mobile-ads';
+import {ADS_ID} from './src/constants/Constants';
 
-const appOpenAd = AppOpenAd.createForAdRequest(TestIds.APP_OPEN, {
+const appOpenAd = AppOpenAd.createForAdRequest(ADS_ID, {
   requestNonPersonalizedAdsOnly: true,
-  keywords: ["fashion", "clothing"],
+  keywords: ['fashion', 'clothing'],
 });
 
 const App = () => {
@@ -43,19 +43,19 @@ const App = () => {
     <ThemeProvider>
       <NavigationContainer
         onReady={() => {
-          RNBootSplash.hide({ fade: true }).then();
+          RNBootSplash.hide({fade: true}).then();
           appOpenAd.load();
         }}>
         <RootNavigator />
       </NavigationContainer>
       <View
         style={{
-          position: "absolute",
+          position: 'absolute',
           bottom: 0,
-          alignSelf: "center",
-          justifyContent: "center",
+          alignSelf: 'center',
+          justifyContent: 'center',
         }}>
-        <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.BANNER} />
+        <BannerAd unitId={ADS_ID} size={BannerAdSize.BANNER} />
       </View>
     </ThemeProvider>
   );

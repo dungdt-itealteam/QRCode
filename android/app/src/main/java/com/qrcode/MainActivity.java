@@ -3,7 +3,6 @@ package com.qrcode;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
-import com.gevorg.reactlibrary.RNQrGeneratorPackage;
 
 import android.os.Bundle;
 import com.zoontek.rnbootsplash.RNBootSplash;

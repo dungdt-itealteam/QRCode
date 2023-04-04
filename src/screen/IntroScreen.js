@@ -9,8 +9,9 @@ import {
   InterstitialAd,
   AdEventType,
 } from "react-native-google-mobile-ads";
+import {ADS_ID} from '../constants/Constants';
 
-const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+const interstitial = InterstitialAd.createForAdRequest(ADS_ID, {
   requestNonPersonalizedAdsOnly: true,
 });
 
